@@ -8,9 +8,33 @@ def conectarFB(self,caminho,usuario,senha,query):
         print("Firebird: Conexão aberta.")
         try:
             cur = con.cursor()
-            result = cur.execute(query)
+            cur.execute(query)
             print("Query executada com sucesso.")
-            return (result.fetchall())
+            result = cur.fetchall()
+            return (result)
+        except:
+            print("Falha na Consulta.")
+            raise
+        finally:
+            con.close()
+            print("Firebird: Conexão fechada.")
+    except Exception as e:
+        print('Alguma coisa deu errado:', e)
+
+def conectarFBJson(self,caminho,usuario,senha,query):
+    try:
+        con = fdb.connect(dsn=caminho, user=usuario, password=senha)
+        print("Firebird: Conexão aberta.")
+        try:
+            cur = con.cursor()
+            cur.execute(query)
+            print("Query executada com sucesso.")
+            result = cur.fetchall()
+            insertObject = []
+            columnNames = [column[0] for column in cur.description]
+            for record in result:
+                insertObject.append( dict( zip( columnNames , record ) ) )
+            return (insertObject)
         except:
             print("Falha na Consulta.")
             raise

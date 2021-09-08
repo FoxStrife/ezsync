@@ -10,6 +10,7 @@ class Principal:
     usuario = PropertyReader().readProperty('DatabaseSection','USER')
     senha = PropertyReader().readProperty('DatabaseSection','PWD')
     caminhoSQL = '172.18.1.99\SQLSERVER'
+    #caminhoSQL = '187.95.114.73\SQLSERVER'
     usuarioSQL = 'sa'
     senhaSQL = 'MngJq8gpg0'
     base = 'DW2TECH'
@@ -43,7 +44,7 @@ class Principal:
         condicao1 = str(s[0])
 
     print (sql1)
-    print ('aaa '+ condicao1)
+    print (condicao1)
 
     if banco == 'firebird':
         #se o banco for Firebird
@@ -52,12 +53,10 @@ class Principal:
         for r in result2:
             result3 = str(r[0])
         print (result3)
-
-        result4 = conectarFB('',caminho,usuario,senha,sql1 + result3)
+        result4 = conectarFBJson('',caminho,usuario,senha,sql1 + result3)
         for r in result4:
-            result5 = json.dumps(result4)
+            result5 = json.dumps(result4, indent=4)
         print (result5)
-        
         
     elif banco == 'sqlserver':
         #se o banco for SQL Server

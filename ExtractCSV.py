@@ -5,7 +5,7 @@ def csv_to_json(csvFilePath, jsonFilePath):
     jsonArray = []
       
     #read csv file
-    with open(csvFilePath, encoding='utf-8') as csvf: 
+    with open(csvFilePath, encoding='utf-8-sig') as csvf: 
         #load csv file data using csv library's dictionary reader
         csvReader = csv.DictReader(csvf) 
 
@@ -15,10 +15,11 @@ def csv_to_json(csvFilePath, jsonFilePath):
             jsonArray.append(row)
   
     #convert python jsonArray to JSON String and write to file
-    with open(jsonFilePath, 'w', encoding='utf-8') as jsonf: 
+    with open(jsonFilePath, 'w', encoding='utf-8-sig') as jsonf: 
         jsonString = json.dumps(jsonArray, indent=4)
+        print(jsonString)
         jsonf.write(jsonString)
           
-csvFilePath = r'teste2.csv'
+csvFilePath = r'teste empregados.csv'
 jsonFilePath = r'data.json'
 csv_to_json(csvFilePath, jsonFilePath)

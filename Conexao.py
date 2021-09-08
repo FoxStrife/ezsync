@@ -2,7 +2,7 @@ import fdb
 import pyodbc
 from PropertyReader import *
 
-def conectarFB(self,caminho,usuario,senha,query):
+def selectFB(self,caminho,usuario,senha,query):
     try:
         con = fdb.connect(dsn=caminho, user=usuario, password=senha)
         print("Firebird: Conexão aberta.")
@@ -21,7 +21,7 @@ def conectarFB(self,caminho,usuario,senha,query):
     except Exception as e:
         print('Alguma coisa deu errado:', e)
 
-def conectarFBJson(self,caminho,usuario,senha,query):
+def selectFBJson(self,caminho,usuario,senha,query):
     try:
         con = fdb.connect(dsn=caminho, user=usuario, password=senha)
         print("Firebird: Conexão aberta.")
@@ -44,7 +44,7 @@ def conectarFBJson(self,caminho,usuario,senha,query):
     except Exception as e:
         print('Alguma coisa deu errado:', e)
 
-def conectarSQL(caminho,base,usuario,senha,query):
+def selectSQL(caminho,base,usuario,senha,query):
     try:
         driver_name = ''
         driver_names = [x for x in pyodbc.drivers() if x.endswith(' for SQL Server')]
@@ -55,6 +55,27 @@ def conectarSQL(caminho,base,usuario,senha,query):
         try:
             cursql = consql.cursor()
             result = cursql.execute(query)
+            return (result.fetchall())
+        except:
+            print("Falha na Consulta.")
+            raise
+        finally:
+            cursql.close()
+            print("SQLServer: Conexão fechada.")
+    except Exception as e:
+        print('Alguma coisa deu errado:', e)
+
+def executeSQL(caminho,base,usuario,senha,query,filars,user,pwd,token,sistema,integracao,json):
+    try:
+        driver_name = ''
+        driver_names = [x for x in pyodbc.drivers() if x.endswith(' for SQL Server')]
+        if driver_names:
+            driver_name = driver_names[0]
+        consql = pyodbc.connect('DRIVER={' + driver_name + '};SERVER='+caminho+';DATABASE='+base+';UID='+usuario+';PWD='+ senha)
+        print("SQLServer: Conexão aberta.")
+        try:
+            cursql = consql.cursor()
+            result = cursql.execute(query + filars + ',' + user + ',' + pwd + ',' + token + ',' + sistema + ',' + integracao + ','  + json)
             return (result.fetchall())
         except:
             print("Falha na Consulta.")

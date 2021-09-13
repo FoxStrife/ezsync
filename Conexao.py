@@ -65,7 +65,7 @@ def selectSQL(caminho,base,usuario,senha,query):
     except Exception as e:
         print('Alguma coisa deu errado:', e)
 
-def executeSQL(caminho,base,usuario,senha,query,filars,user,pwd,token,sistema,integracao,json):
+def executeSQL(caminho,base,usuario,senha,query,filars,user,pwd,token,sistema,integracao,json,url,urlparam):
     try:
         driver_name = ''
         driver_names = [x for x in pyodbc.drivers() if x.endswith(' for SQL Server')]
@@ -75,7 +75,7 @@ def executeSQL(caminho,base,usuario,senha,query,filars,user,pwd,token,sistema,in
         print("SQLServer: Conexão aberta.")
         try:
             cursql = consql.cursor()
-            result = cursql.execute(query + filars + ',' + user + ',' + pwd + ',' + token + ',' + sistema + ',' + integracao + ','  + json)
+            result = cursql.execute(query + filars + ',' + user + ',' + pwd + ',' + token + ',' + sistema + ',' + integracao + ','  + json + ','  + url + ','  + urlparam)
             return (result.fetchall())
         except:
             print("Falha na Consulta.")

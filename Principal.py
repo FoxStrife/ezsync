@@ -37,6 +37,14 @@ class Principal:
     else:
         print ('Banco de dados não suportado.')
 
+    sql = selectSQL(caminhoSQL,base,usuarioSQL,senhaSQL,"SELECT URL, URLPARAM FROM DW_FILAS WHERE ID_DW_FILAS = " + filars + "")
+    for s in sql:
+        url = str(s[0])
+        urlparam = str(s[1])
+
+        print(url)
+        print(urlparam)
+
     sql = selectSQL(caminhoSQL,base,usuarioSQL,senhaSQL,"SELECT CAST(SQL AS VARCHAR(MAX)) AS SQL FROM DW_SQLS WHERE ID_FILA = "
     + str(filars) + " AND ID_SISTEMA_ORIGEM = 4 AND ID_SISTEMA_DESTINO = 1 AND ID_BANCO_DE_DADOS = " + str(3) + "")
     for s in sql:
@@ -64,7 +72,12 @@ class Principal:
         #se o banco for SQL Server
         print()
 
-    result6 = executeSQL('',caminho,usuario,senha,'EXEC DW_HUB ',filars,user_integracao,pwd_integracao,token_integracao,sistema,result5)
+
+    #variaveis de homologacao
+    token_integracao = '523bc781-6eca-11ea-b13e-d531c192bf1e'
+    url = 'https://social.flash.nela.com.br'
+
+    result6 = executeSQL('',caminho,base,usuario,senha,'EXEC DW_HUB ',filars,user_integracao,pwd_integracao,token_integracao,sistema,integracao,result5,url,urlparam)
 
     #print ("ID =",filars)
     #print ("LIST =",pkdwsync)

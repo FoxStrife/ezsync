@@ -23,15 +23,14 @@ class Principal:
     fila = ""
 
 # conecta no tipo de banco que o cliente possui e extrai informacoes sobre a fila que será integrada
-    if banco == 'firebird':
+    if banco == '3':
         #se o banco for Firebird
         result= selectFB('',caminho,usuario,senha,"SELECT FIRST 1 DISTINCT A.IDFILA, (SELECT FIRST 1 ID FROM RHPROTINTEGRATERC WHERE SYNC = 0 AND IDFILA = A.IDFILA), F.DESCRICAO FROM RHPROTINTEGRATERC A LEFT JOIN RHSISTEMAINTEGRATERCFILA F ON F.IDSISTEMA = A.IDSISTEMA WHERE  SYNC = 0")
         print(result)
         for r in result:
             filars = str(r[0])
-            #pkdwsync = str(r[0])
             fila = r[2]
-    elif banco == 'sqlserver':
+    elif banco == '2':
         #se o banco for SQL Server
         print()
     else:
@@ -46,19 +45,19 @@ class Principal:
         print(urlparam)
 
     sql = selectSQL(caminhoSQL,base,usuarioSQL,senhaSQL,"SELECT CAST(SQL AS VARCHAR(MAX)) AS SQL FROM DW_SQLS WHERE ID_FILA = "
-    + str(filars) + " AND ID_SISTEMA_ORIGEM = 4 AND ID_SISTEMA_DESTINO = 1 AND ID_BANCO_DE_DADOS = " + str(3) + "")
+    + str(filars) + " AND ID_SISTEMA_ORIGEM = 4 AND ID_SISTEMA_DESTINO = " + sistema + " AND ID_BANCO_DE_DADOS = " + str(banco) + "")
     for s in sql:
         sql1 = str(s[0])
 
     condicao = selectSQL(caminhoSQL,base,usuarioSQL,senhaSQL,"SELECT CAST(CONDICAO AS VARCHAR(MAX)) AS CONDICAO FROM DW_SQLS WHERE ID_FILA = "
-    + str(filars) + " AND ID_SISTEMA_ORIGEM = 4 AND ID_SISTEMA_DESTINO = 1 AND ID_BANCO_DE_DADOS = " + str(3) + "")
+    + str(filars) + " AND ID_SISTEMA_ORIGEM = 4 AND ID_SISTEMA_DESTINO = " + sistema + " AND ID_BANCO_DE_DADOS = " + str(banco) + "")
     for s in condicao:
         condicao1 = str(s[0])
 
     print (sql1)
     print (condicao1)
 
-    if banco == 'firebird':
+    if banco == '3':
         #se o banco for Firebird
         result2= selectFB('',caminho,usuario,senha,condicao1 + filars)
         for r in result2:
@@ -68,7 +67,7 @@ class Principal:
         for r in result4:
             result5 = json.dumps(result4, indent=4)
         print (result5)        
-    elif banco == 'sqlserver':
+    elif banco == '2':
         #se o banco for SQL Server
         print()
 
@@ -77,7 +76,7 @@ class Principal:
     token_integracao = '523bc781-6eca-11ea-b13e-d531c192bf1e'
     url = 'https://social.flash.nela.com.br'
 
-    result6 = executeSQL(caminho,base,usuario,senha,'EXEC DW_HUB ',filars,user_integracao,pwd_integracao,token_integracao,sistema,integracao,result5,url,urlparam)
+    result6 = executeSQL(caminhoSQL,base,usuarioSQL,senhaSQL,'EXEC DW_HUB ',filars,user_integracao,pwd_integracao,token_integracao,sistema,integracao,result5,url,urlparam)
 
     #print ("ID =",filars)
     #print ("LIST =",pkdwsync)

@@ -77,7 +77,7 @@ class Principal:
     token_integracao = '523bc781-6eca-11ea-b13e-d531c192bf1e'
     url = 'https://social.flash.nela.com.br'
 
-    result6 = executeSQL('',caminho,base,usuario,senha,'EXEC DW_HUB ',filars,user_integracao,pwd_integracao,token_integracao,sistema,integracao,result5,url,urlparam)
+    result6 = executeSQL(caminho,base,usuario,senha,'EXEC DW_HUB ',filars,user_integracao,pwd_integracao,token_integracao,sistema,integracao,result5,url,urlparam)
 
     #print ("ID =",filars)
     #print ("LIST =",pkdwsync)
